@@ -14,6 +14,10 @@ const createItemSchema = z.object({
   text: z.string().min(1, 'Text is required'),
 });
 
+const createCommentSchema = z.object({
+  text: z.string().min(1, 'Comment text is required'),
+});
+
 const updateItemSchema = z.object({
   checked: z.boolean(),
 });
@@ -26,6 +30,10 @@ export async function getCard(req, res, next) {
         labels: true,
         checklists: {
           include: { items: true },
+        },
+        comments: {
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { id: true, name: true } } },
         },
       },
     });
@@ -149,6 +157,38 @@ export async function deleteChecklistItem(req, res, next) {
     await prisma.checklistItem.delete({ where: { id: req.params.itemId } });
 
     res.json({ data: { message: 'Item deleted' } });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createComment(req, res, next) {
+  try {
+    const parsed = createCommentSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.errors[0].message });
+    }
+
+    const comment = await prisma.comment.create({
+      data: {
+        text: parsed.data.text,
+        cardId: req.params.cardId,
+        userId: req.userId,
+      },
+      include: { user: { select: { id: true, name: true } } },
+    });
+
+    res.status(201).json({ data: comment });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteComment(req, res, next) {
+  try {
+    await prisma.comment.delete({ where: { id: req.params.commentId } });
+
+    res.json({ data: { message: 'Comment deleted' } });
   } catch (error) {
     next(error);
   }

@@ -183,10 +183,10 @@ export default function BoardView() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-gray-50 dark:bg-void-950">
         <Header />
         <div className="flex items-center justify-center pt-32">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white" />
+          <div className="w-12 h-12 rounded-full border-2 border-indigo-300 dark:border-neon-cyan/20 border-t-indigo-600 dark:border-t-neon-cyan animate-spin" />
         </div>
       </div>
     );
@@ -194,7 +194,7 @@ export default function BoardView() {
 
   if (!board) {
     return (
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-gray-50 dark:bg-void-950">
         <Header />
         <div className="flex items-center justify-center pt-32">
           <p className="text-gray-500 text-lg">Board not found</p>
@@ -204,16 +204,19 @@ export default function BoardView() {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ backgroundColor: board.color || '#0079bf' }}
-    >
+    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-void-950 relative">
+      {/* Ambient board glow */}
+      <div
+        className="absolute top-0 left-0 right-0 h-64 opacity-[0.04] dark:opacity-[0.07] pointer-events-none"
+        style={{ background: `radial-gradient(ellipse 80% 100% at 50% 0%, ${board.color || '#6366f1'}, transparent)` }}
+      />
       <Header />
 
       {/* Board header */}
-      <div className="pt-12">
-        <div className="px-4 py-3 flex items-center gap-3">
-          <h1 className="text-lg font-bold text-white drop-shadow">{board.title}</h1>
+      <div className="relative pt-12">
+        <div className="px-5 py-3 flex items-center gap-3">
+          <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: board.color || '#6366f1' }} />
+          <h1 className="font-display text-lg font-bold text-gray-800 dark:text-gray-100">{board.title}</h1>
         </div>
       </div>
 
@@ -227,7 +230,7 @@ export default function BoardView() {
                 scrollContainerRef.current = el;
               }}
               {...provided.droppableProps}
-              className="flex-1 flex items-start gap-3 px-4 pb-4 overflow-x-auto overflow-y-hidden"
+              className="relative flex-1 flex items-start gap-3 px-4 pb-4 overflow-x-auto overflow-y-hidden"
               style={{ minHeight: 'calc(100vh - 108px)' }}
             >
               {lists.map((list, index) => (
@@ -246,7 +249,7 @@ export default function BoardView() {
               {/* Add list */}
               <div className="flex-shrink-0 w-72">
                 {addingList ? (
-                  <div className="bg-gray-100 rounded-xl p-3 shadow-sm">
+                  <div className="bg-white dark:bg-void-800 border border-gray-200 dark:border-white/[0.08] rounded-xl p-3 animate-fade-in">
                     <input
                       ref={addListInputRef}
                       type="text"
@@ -260,12 +263,12 @@ export default function BoardView() {
                           setNewListTitle('');
                         }
                       }}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-400 mb-2"
+                      className="w-full bg-gray-50 dark:bg-void-900 border border-gray-200 dark:border-white/[0.08] rounded-lg px-3 py-2 text-sm text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 outline-none focus:ring-2 focus:ring-indigo-500/30 dark:focus:ring-neon-cyan/30 focus:border-indigo-400 dark:focus:border-neon-cyan/40 transition-all mb-2"
                     />
                     <div className="flex gap-2">
                       <button
                         onClick={handleAddList}
-                        className="bg-blue-600 text-white px-4 py-1.5 rounded text-sm font-medium hover:bg-blue-700 transition-colors"
+                        className="bg-gradient-to-r from-neon-indigo to-neon-cyan text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:shadow-glow-cyan transition-all"
                       >
                         Add list
                       </button>
@@ -274,15 +277,10 @@ export default function BoardView() {
                           setAddingList(false);
                           setNewListTitle('');
                         }}
-                        className="text-gray-500 hover:text-gray-700 p-1.5"
+                        className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 p-1.5 transition-colors"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
                     </div>
@@ -290,15 +288,10 @@ export default function BoardView() {
                 ) : (
                   <button
                     onClick={() => setAddingList(true)}
-                    className="w-full bg-white/25 hover:bg-white/40 text-white rounded-xl px-4 py-3 text-sm font-medium text-left transition-colors flex items-center gap-1"
+                    className="w-full border border-dashed border-gray-300 dark:border-white/[0.1] hover:border-indigo-400 dark:hover:border-neon-cyan/30 text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-neon-cyan rounded-xl px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-1.5 hover:bg-white/60 dark:hover:bg-white/[0.02]"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4v16m8-8H4"
-                      />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
                     </svg>
                     Add another list
                   </button>

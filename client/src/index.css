@@ -1,8 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+@layer base {
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dark body {
+    background-color: #06080d;
+    color: #e2e8f0;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.2);
+    color: #1e293b;
+  }
+  .dark ::selection {
+    background: rgba(0, 229, 255, 0.2);
+    color: #fff;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.25);
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* Custom checkbox */
+  input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    background: rgba(0,0,0,0.03);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+  .dark input[type="checkbox"] {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+  }
+  input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #6366f1, #00e5ff);
+    border-color: transparent;
+  }
+  input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4.5px;
+    top: 1.5px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  input[type="checkbox"]:hover {
+    border-color: rgba(99,102,241,0.5);
+  }
+  .dark input[type="checkbox"]:hover {
+    border-color: rgba(0,229,255,0.5);
+  }
+
+  /* Date input */
+  input[type="date"] {
+    color-scheme: light;
+  }
+  .dark input[type="date"] {
+    color-scheme: dark;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dark .text-gradient {
+    background: linear-gradient(135deg, #6366f1 0%, #00e5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .bg-glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .dark .bg-glass {
+    background: rgba(10, 14, 23, 0.7);
+  }
+  .bg-surface {
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .dark .bg-surface {
+    background: rgba(18, 24, 41, 0.8);
+  }
+  .bg-surface-raised {
+    background: rgba(255, 255, 255, 1);
+  }
+  .dark .bg-surface-raised {
+    background: rgba(26, 33, 56, 0.9);
+  }
 }
